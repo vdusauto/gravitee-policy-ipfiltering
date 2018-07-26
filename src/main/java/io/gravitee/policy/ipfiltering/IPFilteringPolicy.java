@@ -51,14 +51,15 @@ public class IPFilteringPolicy {
 
         final boolean isBlacklisted =
                 !(configuration.getBlacklistIps() == null || configuration.getBlacklistIps().isEmpty())
-                && ips.stream().anyMatch(ip -> isFiltered(ip, configuration.getBlacklistIps()));
+                && ips.stream().anyMatch(ip -> isFiltered(ip, configuration.getBlacklistIps().stream().map(IpOrCIDRBlock::getIpOrCIDR).collect(Collectors.toList())));
+
         if(isBlacklisted) {
             fail(policyChain, request.remoteAddress());
             return;
         } else {
             final boolean isWhitelisted =
                     (configuration.getWhitelistIps() == null || configuration.getWhitelistIps().isEmpty())
-                    || ips.stream().anyMatch(ip -> isFiltered(ip, configuration.getWhitelistIps()));
+                    || ips.stream().anyMatch(ip -> isFiltered(ip, configuration.getWhitelistIps().stream().map(IpOrCIDRBlock::getIpOrCIDR).collect(Collectors.toList())));
             if(!isWhitelisted) {
                 fail(policyChain, request.remoteAddress());
                 return;
@@ -91,6 +92,7 @@ public class IPFilteringPolicy {
     }
 
     public boolean isFiltered(String ip, List<String> filteredList) {
+
         return !(null == ip || ip.isEmpty())
                 && filteredList.stream().anyMatch(filterIp -> {
                     if (filterIp.equals(ip)) {

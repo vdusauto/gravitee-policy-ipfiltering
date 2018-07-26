@@ -1,25 +1,53 @@
 {
   "type" : "object",
-  "id" : "urn:jsonschema:io:gravitee:policy:IPFilteringPolicyConfiguration",
+  "id" : "urn:jsonschema:io:gravitee:policy:ipfiltering:IPFilteringPolicyConfiguration",
   "properties" : {
     "matchAllFromXForwardedFor" : {
       "title" : "Use X-Forwarded-For header",
       "type" : "boolean"
     },
     "whitelistIps" : {
-      "title" : "IPs Whitelist (CIDR allowed)",
+      "title" : "Whitelist (IPs and CIDR allowed)",
       "type" : "array",
       "items" : {
-        "title" : "IP or CIDR",
-        "type" : "string"
+        "type" : "object",
+        "id" : "urn:jsonschema:io:gravitee:policy:ipfiltering:IpOrCIDRBlock",
+        "title" : "Whitelist entry",
+        "properties" : {
+          "info": {
+            "title": "Information about entry (server name, context, ...)",
+            "type": "string"
+          },
+          "ipOrCIDR": {
+            "title": "IP or CIDR",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ipOrCIDR"
+        ]
       }
     },
     "blacklistIps" : {
-      "title" : "IPs Blacklist (CIDR allowed)",
+      "title" : "Blacklist (IPs and CIDR allowed)",
       "type" : "array",
       "items" : {
-        "title" : "IP or CIDR",
-        "type" : "string"
+        "type" : "object",
+        "id" : "urn:jsonschema:io:gravitee:policy:ipfiltering:configuration:IpOrCIDRBlock",
+        "title" : "Blacklist entry",
+        "properties" : {
+          "info": {
+            "title": "Information about entry (server name, context, ...)",
+            "type": "string"
+          },
+          "ipOrCIDR": {
+            "title": "IP or CIDR",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ipOrCIDR"
+        ]
       }
     }
   }

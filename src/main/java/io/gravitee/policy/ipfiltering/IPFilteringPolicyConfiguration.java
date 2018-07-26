@@ -15,9 +15,12 @@
  */
 package io.gravitee.policy.ipfiltering;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.gravitee.policy.api.PolicyConfiguration;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class IPFilteringPolicyConfiguration implements PolicyConfiguration {
@@ -30,12 +33,14 @@ public class IPFilteringPolicyConfiguration implements PolicyConfiguration {
     /**
      * The list of IP that are allowed to be call the api.
      */
-    private List<String> whitelistIps;
+    @JsonProperty("whitelistIps")
+    private List<IpOrCIDRBlock> whitelistIps;
 
     /**
      * The list of IP that are not allowed to be call the api.
      */
-    private List<String> blacklistIps;
+    @JsonProperty("blacklistIps")
+    private List<IpOrCIDRBlock> blacklistIps;
 
     public boolean isMatchAllFromXForwardedFor() {
         return matchAllFromXForwardedFor;
@@ -45,19 +50,19 @@ public class IPFilteringPolicyConfiguration implements PolicyConfiguration {
         this.matchAllFromXForwardedFor = matchAllFromXForwardedFor;
     }
 
-    public List<String> getWhitelistIps() {
+    public List<IpOrCIDRBlock> getWhitelistIps() {
         return whitelistIps;
     }
 
-    public void setWhitelistIps(List<String> whitelistIps) {
+    public void setWhitelistIps(List<IpOrCIDRBlock> whitelistIps) {
         this.whitelistIps = whitelistIps;
     }
 
-    public List<String> getBlacklistIps() {
+    public List<IpOrCIDRBlock> getBlacklistIps() {
         return blacklistIps;
     }
 
-    public void setBlacklistIps(List<String> blacklistIps) {
-        this.blacklistIps = blacklistIps;
+    public void setBlacklistIps(List<IpOrCIDRBlock> blacklistIpList) {
+        this.blacklistIps = blacklistIpList;
     }
 }

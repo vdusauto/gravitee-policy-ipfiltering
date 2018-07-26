@@ -39,14 +39,33 @@ You can configure the policy with the following options :
 |whitelistIps
 |No
 |a list of allowed IPs with or without CIDR notation.
-|string list
+| array of <<gravitee-policy-resource-ipfiltering-IPorCIDR, `IPorCIDR`>>
 |_empty_
 
 |blacklistIps
 |No
 |a list of denyed IPs with or without CIDR notation.
-|string list
+| array of <<gravitee-policy-resource-ipfiltering-IPorCIDR, `IPorCIDR`>>
 |_empty_
+
+|===
+
+[[gravitee-policy-resource-ipfiltering-IPorCIDR]]
+An `IPorCIDR` is defined as follow:
+|===
+|Property |Required |Description |Type| Default
+
+.^|ipOrCIDR
+^.^|yes
+|IP or CIDR
+^.^|string
+^.^|-
+
+.^|info
+^.^|-
+|Description of the ip or CIDR
+^.^|string
+^.^|-
 
 |===
 
@@ -57,11 +76,15 @@ You can configure the policy with the following options :
 "ip-filtering": {
   "matchAllFromXForwardedFor": true,
   "whitelistIps": [
-    "10.0.0.1",
-    "10.0.0.2/10"
+	{
+	  "info": "test",
+	  "ipOrCIDR": "172.18.0.1"
+	}
   ],
   "blacklistIps": [
-    null
+	{
+	  "ipOrCIDR": "123.123.123.123"
+	}
   ]
 }
 ----
